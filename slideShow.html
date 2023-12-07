@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SlideShow</title>
+    <style>
+        .sliderContainer{
+            width: 60%;
+            /* position: relative; */
+            margin: auto;
+           
+        }
+
+        .sliderContainer > img{
+            width: 100%;
+            /* overflow: hidden; */
+            /* position: absolute; */
+            
+           
+        }
+
+       .buttons {
+        /* border: 2px solid red; */
+        width: 30%;
+        font-size: 20px;
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 20px;
+        margin: auto;
+        
+
+        }
+
+        .buttons > button{
+            width: 90px;
+            height: 40px;
+            font-size: 18px;
+            font-weight: 550;
+            border-radius: 5px;
+            color: white;
+            margin-left: 60%;
+            
+        }
+
+        .buttons  > button:hover{
+            background-color: rgb(227, 46, 155);
+        }
+        .buttons > :nth-child(1){
+            background-color: gold;
+        }
+        .buttons > :nth-child(2){
+            background-color: rgb(28, 203, 28);
+
+        }
+        .buttons > :nth-last-child(2){
+            background-color: rgb(154, 68, 154);
+        }
+        .buttons > :nth-last-child(1){
+            background-color: dodgerblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="sliderContainer">
+        <img src="" alt="">
+    </div>
+
+    <br><br>
+    <div class="buttons">
+    <button onclick="stop()">Stop</button>
+    <button onclick="start()">Start</button>
+    <br>
+    <button onclick="prev()">Prev</button>
+    <button onclick="next()">Next</button>
+</div>
+</body>
+</html>
+<script>
+    imageArr = [
+        "https://fastly.picsum.photos/id/20/3670/2462.jpg?hmac=CmQ0ln-k5ZqkdtLvVO23LjVAEabZQx2wOaT4pyeG10I",
+        "https://fastly.picsum.photos/id/19/2500/1667.jpg?hmac=7epGozH4QjToGaBf_xb2HbFTXoV5o8n_cYzB7I4lt6g",
+        "https://fastly.picsum.photos/id/25/5000/3333.jpg?hmac=yCz9LeSs-i72Ru0YvvpsoECnCTxZjzGde805gWrAHkM",
+        "https://fastly.picsum.photos/id/26/4209/2769.jpg?hmac=vcInmowFvPCyKGtV7Vfh7zWcA_Z0kStrPDW3ppP0iGI",
+        "https://fastly.picsum.photos/id/29/4000/2670.jpg?hmac=rCbRAl24FzrSzwlR5tL-Aqzyu5tX_PA95VJtnUXegGU",
+        "https://fastly.picsum.photos/id/28/4928/3264.jpg?hmac=GnYF-RnBUg44PFfU5pcw_Qs0ReOyStdnZ8MtQWJqTfA",
+        "https://fastly.picsum.photos/id/30/1280/901.jpg?hmac=A_hpFyEavMBB7Dsmmp53kPXKmatwM05MUDatlWSgATE",
+        "https://fastly.picsum.photos/id/37/2000/1333.jpg?hmac=vpYLNsQZwU2szsZc4Uo17cW786vR0GEUVq4icaKopQI",
+        "https://fastly.picsum.photos/id/39/3456/2304.jpg?hmac=cc_VPxzydwTUbGEtpsDeo2NxCkeYQrhTLqw4TFo-dIg",
+        "https://fastly.picsum.photos/id/42/3456/2304.jpg?hmac=dhQvd1Qp19zg26MEwYMnfz34eLnGv8meGk_lFNAJR3g",
+        "https://fastly.picsum.photos/id/43/1280/831.jpg?hmac=glK-rQ0ppFClW-lvjk9FqEWKog07XkOxJf6Xg_cU9LI",
+        "https://fastly.picsum.photos/id/48/5000/3333.jpg?hmac=y3_1VDNbhii0vM_FN6wxMlvK27vFefflbUSH06z98so",
+        "https://fastly.picsum.photos/id/49/1280/792.jpg?hmac=NnUJy0O9-pXHLmY2loqVs2pJmgw9xzuixgYOk4ALCXU",
+        "https://fastly.picsum.photos/id/54/3264/2176.jpg?hmac=blh020fMeJ5Ru0p-fmXUaOAeYnxpOPHnhJojpzPLN3g",
+        "https://fastly.picsum.photos/id/59/2464/1632.jpg?hmac=uTfe6jCzLvCzANvJgtpo-a0fKhO8BvjpwLNYX3lqx_Q",
+        "https://fastly.picsum.photos/id/60/1920/1200.jpg?hmac=fAMNjl4E_sG_WNUjdU39Kald5QAHQMh-_-TsIbbeDNI",
+        "https://fastly.picsum.photos/id/63/5000/2813.jpg?hmac=HvaeSK6WT-G9bYF_CyB2m1ARQirL8UMnygdU9W6PDvM",
+        "https://fastly.picsum.photos/id/65/4912/3264.jpg?hmac=uq0IxYtPIqRKinGruj45KcPPzxDjQvErcxyS1tn7bG0",
+        "https://fastly.picsum.photos/id/76/4912/3264.jpg?hmac=VkFcSa2Rbv0R0ndYnz_FAmw02ON1pPVjuF_iVKbiiV8",
+        "https://fastly.picsum.photos/id/84/1280/848.jpg?hmac=YFRYDI4UsfbeTzI8ZakNOR98wVU7a-9a2tGF542539s"
+        
+    ]
+
+
+    let currentImage = 0
+// img tag catch  
+let images = document.querySelector("img")
+images.setAttribute("src", imageArr[currentImage])
+images.setAttribute("class","sliderImage")
+
+
+// for image set interval id 
+let slider;
+
+// start button 
+function start(){
+    slider =  setInterval(()=>{
+        currentImage++
+        if(currentImage >= imageArr.length-1)
+    {
+        currentImage = 0
+    }
+
+        images.setAttribute("src", imageArr[currentImage])
+    },1200)
+}
+
+
+function stop(){
+    clearInterval(slider)
+}
+// Next Button 
+function next(){
+    clearInterval(slider)
+    currentImage++;
+    if(currentImage >= imageArr.length-1)
+    {
+        currentImage = 0
+    }
+
+    images.setAttribute("src", imageArr[currentImage])
+    // updateSlider()
+}
+
+
+// prev button 
+function prev(){
+    clearInterval(slider)
+    currentImage--
+    if(currentImage < 0){
+        currentImage = imageArr.length-1
+    }
+
+    images.setAttribute("src", imageArr[currentImage])
+    // updateSlider()
+}
+
+
+
+// function updateSlider(){
+//     images.style.transform = `translateX(-${currentImage  * 100}%)`;
+// }
+
+//  updateSlider()
+
+</script>
