@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+
+        h2{
+            text-align: center;
+            font-size: 50px;
+            font-weight: 550;
+            text-decoration: underline;
+            color:  teal;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        h1{
+            text-align: center;
+            font-size: 60px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            /* text-decoration: underline; */
+            color: brown;
+        }
+        /* display */
+        .stopwatch{
+            border:  10px solid brown;
+            display: grid;
+            justify-content: center;
+            width: 60%;
+            height: 280px;
+            padding: 30px;
+            text-align: center;
+            font-size: 78px;
+            font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: auto;
+            padding-bottom: 50px;
+            padding-top: 20px;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+        }
+
+        #inputTime{
+            border: 2px solid grey;
+            width: 300px;
+            height:50px;
+            font-size: 20px;
+            text-align: center;
+        }
+        /* button div */
+
+        .buttons{
+            /* border: 2px solid red; */
+            width: 30%;
+            height: 50px;
+            margin: auto;
+            text-align: center;
+            margin-top: 10px;
+            padding: 5px;
+            
+        }
+
+        .buttons > button{
+            border-radius: 5px;
+            width: 110px;
+            height: 50px;
+            font-size: 23px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        }
+
+        button:hover{
+            background-color: goldenrod;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Timer</h2>
+    <!-- display -->
+    <div class="stopwatch">
+        <h1 id="head">Set Timer</h1>
+        <input type="text" id="inputTime" placeholder="Enter time in HH:mm:ss">
+
+    </div>
+    
+    <!-- button -->
+    <div class="buttons">
+    <button onclick="start()">Start</button>
+    <button onclick="pause()">Pause</button>
+    <button onclick="reset()">Reset</button>
+</div>
+</body>
+</html>
+
+<script>
+    // start button
+    // pause
+    // reset
+    // display the function
+
+    let stoptimer;
+    let hours = 24
+    let minutes = 60
+    let seconds = 60;
+    
+
+    // catching all elements here
+    let screen  = document.querySelector(".stopwatch")
+    let inputTime =  document.getElementById("inputTime")
+    let head = document.getElementById("head")
+    
+    
+    
+
+    // Start button
+    function start() {
+    let timeInput = inputTime.value;
+    let timeArr = timeInput.split(':');
+
+    hours = parseInt(timeArr[0]) || 0;
+    minutes = parseInt(timeArr[1]) || 0;
+    seconds = parseInt(timeArr[2]) || 0;
+
+    // Update the display immediately
+    updateDisplay();
+
+    stoptimer = setInterval(stopwatch, 1000);
+}
+
+function updateDisplay() {
+    screen.innerText = `${hours}hr : ${minutes}m : ${seconds}s`;
+}
+
+
+    // Pause button
+    function pause(){
+        clearInterval(stoptimer)
+        
+    }
+
+    // Reset Button
+    function reset(){
+        clearInterval(stoptimer)
+       
+        screen.innerText = ""
+        head.innerText = "Set timer"
+        inputTime.value = ""
+        screen.append(head,inputTime)
+        screen.style.paddingTop = "20px"
+        screen.style.paddingBottom = "10px"
+
+        
+    }
+
+
+
+    function stopwatch(){
+
+    if(seconds == 0 && minutes > 0)
+    {
+        minutes = minutes - 1
+        seconds = 59
+    }
+    else
+    {
+        seconds--
+    }
+   
+   
+    if(minutes == 0 && hours > 0)
+    {
+        hours = hours -1
+        minutes = 59
+    }
+
+
+    if(hours == 0)
+    {
+        clearInterval(stoptimer)
+    }
+    
+
+    // print timer on screen
+    updateDisplay()
+
+    }
+    
+    
+</script>
+
+
+
+
+
+
